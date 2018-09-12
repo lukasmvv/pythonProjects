@@ -103,6 +103,7 @@ class player:
 		
 	# Calculates the score of the di for chosen 3 of a kind or 4 of a kind
 	def calculateTQScore(self,tq):
+		ret = 1
 		if tq in(3,4):
 			score = 0
 			tripVal = 0
@@ -128,7 +129,40 @@ class player:
 					self.quadScore = score
 			else:
 				print("Invalid input.")
+				ret = 0
+		return ret
+	
+	# Calculates if there is yatzi in the kept di
+	def calculateYatzi(self):
+		ret = 1
+		if self.yatziScore == None:
+			ls = self.keptDi
+			val = ls[0]			
+			score = 0
+			if ls.count(val) == 5:
+				score = 50
+			self.yatziScore = score
+				
+		else:
+			print("Invalid input.")
+			ret = 0
+		return ret
+				
+	# Calculates the sum of all di values
+	def calculateChance(self):
+		ret = 1
+		if self.chanceScore == None:
+			score = 0
+			ls = self.keptDi
+			for i in ls:
+				score = score + i
+			self.chanceScore = score
+		else:
+			print("Invalid input.")
+			ret = 0
+		return ret
 
+		
 # ----- Rolling Dice Methods -----		
 # Returns a random integer
 def roll_one_dice():
@@ -184,11 +218,15 @@ while loop:
 			else:
 				i = i - 1
 		elif playerInput in ("T","t"):
-			player1.calculateTQScore(3)
-			i = 4
+			if player1.calculateTQScore(3) == 1:
+				i = 4
+			else:
+				i = i - 1
 		elif playerInput in ("Q","q"):
-			player1.calculateTQScore(4)
-			i = 4
+			if player1.calculateTQScore(4) == 1:
+				i = 4
+			else: 
+				i = i - 1
 		elif playerInput in ("F","f"):
 			i = 4
 		elif playerInput in ("S","s"):
@@ -196,9 +234,15 @@ while loop:
 		elif playerInput in ("L","l"):
 			i = 4
 		elif playerInput in ("Y","y"):
-			i = 4
+			if player1.calculateYatzi() == 1:
+				i = 4
+			else:
+				i = i - 1				
 		elif playerInput in ("C","c"):
-			i = 4
+			if player1.calculateChance() == 1:
+				i = 4
+			else:
+				i = i - 1
 		else:
 			print("Invalid input.")
 			i = i - 1
